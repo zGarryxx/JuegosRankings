@@ -1,0 +1,243 @@
+/* inicio.css - Rediseño Tech/Dark */
+
+body.dark-theme {
+    background-color: #0B0C10;
+    /* Patrón de cuadrícula de fondo */
+    background-image: radial-gradient(#1F2833 1px, transparent 1px);
+    background-size: 30px 30px;
+    color: #C5C6C7;
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Ocultar elementos antiguos si no se quitaron del HTML */
+.particles, .bg-image { display: none !important; }
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    background: rgba(11, 12, 16, 0.95);
+    border-bottom: 2px solid #66FCF1;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    box-sizing: border-box;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.brand-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #FFF;
+}
+
+.brand-title .highlight {
+    color: #66FCF1;
+}
+
+.outline-btn {
+    color: #66FCF1;
+    text-decoration: none;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid #66FCF1;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.2s all;
+}
+
+.outline-btn:hover {
+    background: #66FCF1;
+    color: #0B0C10;
+    box-shadow: 0 0 15px rgba(102, 252, 241, 0.5);
+}
+
+.main-wrapper {
+    margin-top: 100px;
+    padding: 0 5%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.jumbotron-center {
+    text-align: center;
+    padding: 5rem 0;
+    border: 1px dashed #1F2833;
+    background: rgba(31, 40, 51, 0.3);
+    margin-bottom: 4rem;
+    position: relative;
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.version-tag {
+    display: inline-block;
+    background: #FF0055;
+    color: white;
+    padding: 0.3rem 1rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    box-shadow: 4px 4px 0px #66FCF1;
+    text-transform: uppercase;
+}
+
+.mega-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    margin: 0 0 1.5rem 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #FFF;
+}
+
+.neon-text {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #66FCF1;
+    text-shadow: 0 0 20px rgba(102, 252, 241, 0.3);
+}
+
+.subtitle-text {
+    font-size: 1.1rem;
+    color: #9BA4B5;
+    max-width: 700px;
+    margin: 0 auto 3rem auto;
+    line-height: 1.6;
+}
+
+.action-panel {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+}
+
+.solid-btn {
+    background: #66FCF1;
+    color: #0B0C10;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    /* Esquina cortada tipo Cyberpunk */
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+    transition: transform 0.2s;
+}
+
+.solid-btn:hover {
+    transform: scale(1.05);
+    background: #45A29E;
+}
+
+.ghost-btn {
+    background: transparent;
+    color: #FFF;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border: 2px solid #1F2833;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.ghost-btn:hover {
+    border-color: #FF0055;
+    color: #FF0055;
+}
+
+.icon-array {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    margin-top: 2rem;
+}
+
+.hologram {
+    font-size: 3rem;
+    color: #66FCF1;
+    opacity: 0.5;
+    filter: drop-shadow(0 0 15px #66FCF1);
+    transition: all 0.3s;
+}
+
+.hologram:hover {
+    opacity: 1;
+    transform: translateY(-10px);
+}
+
+.info-blocks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.info-panel {
+    background: #12151C;
+    border-left: 4px solid #FF0055;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.info-panel:hover {
+    transform: translateY(-5px);
+    border-color: #66FCF1;
+}
+
+/* Detalle visual de esquina plegada */
+.info-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, #12151C 50%, #1F2833 50%);
+}
+
+.panel-header {
+    font-size: 2rem;
+    color: #FF0055;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+}
+
+.info-panel:hover .panel-header {
+    color: #66FCF1;
+}
+
+.info-panel h2 {
+    font-size: 1.5rem;
+    margin-top: 0;
+    text-transform: uppercase;
+    color: #FFF;
+    letter-spacing: 1px;
+}
+
+.info-panel p {
+    color: #9BA4B5;
+    line-height: 1.6;
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.site-footer {
+    text-align: center;
+    padding: 3rem 1rem;
+    border-top: 1px dashed #1F2833;
+    color: #45A29E;
+    font-family: monospace;
+    background: #0B0C10;
+}

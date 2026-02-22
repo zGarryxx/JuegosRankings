@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Registros - GamesHub_</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'ranking/home.css' %}">
+    <link rel="stylesheet" href="{% static 'ranking/mis_rankings.css' %}">
+    <link rel="icon" href="{% static 'ranking/favicon.ico' %}" type="image/x-icon">
+</head>
+
+<body class="cyber-theme">
+    <div class="particles"></div>
+    <div class="bg-image"></div>
+
+    <nav class="top-nav">
+        <div class="brand-title">Games<span class="highlight">Rankings</span>_</div>
+        <div class="user-terminal">
+            <a href="{% url 'home' %}" class="btn-power" title="Dashboard Principal"><i class="fas fa-home"></i></a>
+            <span class="user-id"><span class="dim-text">USR:</span> MIS_LISTAS <span class="blink">_</span></span>
+            <a href="{% url 'logout' %}" class="btn-power" title="Desconectar"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <header class="terminal-header">
+            <div class="sys-badge">/// MEMORIA LOCAL</div>
+            <h1 class="mega-title">REGISTROS <span class="neon-text-cyan">PERSONALES</span></h1>
+            <p class="subtitle-text">>_ Acceda, edite o purgue sus jerarquías de datos guardadas.</p>
+        </header>
+
+        <div class="rankings-feed">
+            {% for item in rankings %}
+                <div class="sys-panel">
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <i class="fas fa-layer-group target-icon"></i>
+                            <h2 class="category-name">{{ item.categoria }}</h2>
+                        </div>
+
+                        <div class="row-actions">
+                            <a href="{% url 'crear_ranking' item.categoria_id %}?edit_id={{ item.ranking_id }}" class="btn-icon">
+                                <i class="fas fa-edit"></i> RE-CONFIG
+                            </a>
+
+                            <form action="{% url 'eliminar_ranking' item.ranking_id %}" method="POST" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-icon danger" onclick="return confirm('¿CONFIRMA PURGAR ESTE RANKING DE LA MEMORIA?');">
+                                    <i class="fas fa-trash-alt"></i> PURGAR
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="sys-ladder">
+                        {% for juego in item.juegos %}
+                            <div class="data-row status-{% if juego.puesto == 1 %}gold{% elif juego.puesto == 2 %}silver{% elif juego.puesto == 3 %}bronze{% else %}normal{% endif %}">
+                                <div class="rank-number">#{{ juego.puesto }}</div>
+
+                                <img src="{{ juego.imagen|default:'/static/ranking/favicon.ico' }}" class="mini-avatar">
+
+                                <div class="row-title">{{ juego.nombre }}</div>
+
+                                <div class="medal-icon">
+                                    {% if juego.puesto == 1 %}
+                                        <i class="fas fa-medal sys-gold"></i>
+                                    {% elif juego.puesto == 2 %}
+                                        <i class="fas fa-medal sys-silver"></i>
+                                    {% elif juego.puesto == 3 %}
+                                        <i class="fas fa-medal sys-bronze"></i>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state">
+                    <div class="sys-error">
+                        [!] MEMORIA VACÍA. NO EXISTEN RANKINGS ALMACENADOS.<br>
+                        <a href="{% url 'elegir_categoria_ranking' %}" class="cyber-link-btn">> INICIALIZAR NUEVO RANKING</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div style="margin-top: 50px;">
+             <a href="{% url 'home' %}" class="cyber-link">
+                <i class="fas fa-arrow-left"></i> [ABORTAR] VOLVER AL DASHBOARD
+             </a>
+        </div>
+    </div>
+</body>
+</html>

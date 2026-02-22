@@ -1,0 +1,242 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Base de Datos - GamesHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'ranking/home.css' %}">
+    <link rel="stylesheet" href="{% static 'ranking/games.css' %}">
+</head>
+
+<body class="cyber-theme">
+    <div class="particles"></div>
+    <div class="bg-image"></div>
+
+    <nav class="top-nav">
+        <div class="brand-title">Games<span class="highlight">Hub</span>_</div>
+        <div class="user-terminal">
+            <span class="user-id"><span class="dim-text">USR:</span> {{ user.nombre }} <span class="blink">_</span></span>
+            <a href="{% url 'logout' %}" class="btn-power" title="Desconectar">
+                <i class="fas fa-power-off"></i>
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <header class="terminal-header">
+            <div class="sys-badge">/// DIR: /BBDD/JUEGOS</div>
+            <h1 class="mega-title">BIBLIOTECA DE <span class="neon-text-magenta">DATOS</span></h1>
+            <p class="subtitle-text">>_ Consulta, escanea y evalúa el inventario global.</p>
+        </header>
+
+        <div class="search-module">
+            <form method="get" class="cyber-search-form">
+                <span class="prompt-symbol">></span>
+                <input type="text" name="nombre" class="cyber-input" placeholder="BUSCAR_IDENTIFICADOR..." value="{{ request.GET.nombre|default:'' }}">
+                <button type="submit" class="cyber-search-btn"><i class="fas fa-radar"></i> ESCANEAR</button>
+            </form>
+        </div>
+
+        <div class="games-grid">
+            {% for game in page_obj %}
+            <article class="data-card"
+                 data-id="{{ game.BGGId }}"
+                 data-name="{{ game.Name }}"
+                 data-description="{{ game.Description }}"
+                 data-year="{{ game.YearPublished }}"
+                 data-players="{{ game.MinPlayers }} - {{ game.MaxPlayers }}"
+                 data-rating="{{ game.AvgRating }}"
+                 data-weight="{{ game.GameWeight }}"
+                 data-image="{{ game.ImagePath }}">
+
+                <div class="card-visual">
+                    <div class="scanline"></div>
+                    <img src="{{ game.ImagePath|default:'/static/ranking/favicon.ico' }}" alt="{{ game.Name }}">
+                    <div class="card-overlay">
+                        <span class="view-text">INSPECCIONAR_DATA</span>
+                    </div>
+                </div>
+
+                <div class="card-info">
+                    <h3 class="game-title">{{ game.Name }}</h3>
+                    <div class="card-metrics">
+                        <span class="metric"><i class="fas fa-users"></i> {{ game.MinPlayers }}-{{ game.MaxPlayers }}</span>
+                        <span class="metric highlight-metric"><i class="fas fa-star"></i> {{ game.AvgRating }}</span>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+                <div class="sys-error">
+                    [!] ERROR 404: REGISTROS NO ENCONTRADOS.
+                </div>
+            {% endfor %}
+        </div>
+
+        <nav class="cyber-pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&nombre={{ request.GET.nombre }}" class="pag-btn">&laquo; INIT</a>
+                <a href="?page={{ page_obj.previous_page_number }}&nombre={{ request.GET.nombre }}" class="pag-btn">PREV</a>
+            {% endif %}
+
+            <span class="pag-current">
+                [ BLOCK {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} ]
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&nombre={{ request.GET.nombre }}" class="pag-btn">NEXT</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&nombre={{ request.GET.nombre }}" class="pag-btn">END &raquo;</a>
+            {% endif %}
+        </nav>
+
+    </div>
+
+    <div id="gameModal" class="modal-overlay">
+        <div class="cyber-modal">
+            <div class="modal-border-top"></div>
+            <span class="close-modal">[ X ] TERMINAR</span>
+
+            <div class="modal-layout">
+                <div class="modal-visual-col">
+                    <div class="hologram-frame">
+                        <img id="modalImage" src="" alt="Juego">
+                        <div class="scanline"></div>
+                    </div>
+                </div>
+
+                <div class="modal-data-col">
+                    <div class="sys-badge">/// ANÁLISIS DETALLADO</div>
+                    <h2 id="modalTitle" class="glitch-title-sm"></h2>
+
+                    <div class="data-log" id="modalDescription"></div>
+
+                    <div class="hardware-specs">
+                        <div class="spec-item"><span class="spec-label">AÑO:</span> <span id="modalYear"></span></div>
+                        <div class="spec-item"><span class="spec-label">JUGADORES:</span> <span id="modalPlayers"></span></div>
+                        <div class="spec-item highlight-spec"><span class="spec-label">RATING_GLOBAL:</span> <span id="modalRating"></span></div>
+                    </div>
+
+                    <div class="action-box">
+                        <h3 id="ratingTitle" class="box-title">> INGRESO DE VALORACIÓN</h3>
+                        <div class="cyber-stars">
+                            <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
+                            <input type="radio" name="stars" id="s4" value="4"><label for="s4">★</label>
+                            <input type="radio" name="stars" id="s3" value="3"><label for="s3">★</label>
+                            <input type="radio" name="stars" id="s2" value="2"><label for="s2">★</label>
+                            <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
+                        </div>
+                        <textarea id="modalComment" class="cyber-textarea" placeholder="Escriba el registro de la reseña..."></textarea>
+                        <button id="submitRating" class="cyber-btn-magenta">TRANSMITIR DATOS <span class="blink">_</span></button>
+                    </div>
+
+                    <div class="community-box">
+                        <h3 class="box-title">> LOGS DE USUARIOS</h3>
+                        <div id="reviewsList" class="reviews-container">
+                            <div class="sys-msg">Cargando paquetes de datos...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-border-bottom"></div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".data-card");
+        const modal = document.getElementById("gameModal");
+        const closeBtn = document.querySelector(".close-modal");
+        let currentGameId = null;
+
+        cards.forEach(card => {
+            card.addEventListener("click", () => {
+                currentGameId = card.getAttribute('data-id');
+
+                document.getElementById("modalTitle").textContent = card.dataset.name;
+                document.getElementById("modalDescription").textContent = card.dataset.description;
+                document.getElementById("modalYear").textContent = card.dataset.year;
+                document.getElementById("modalPlayers").textContent = card.dataset.players;
+                document.getElementById("modalRating").textContent = card.dataset.rating;
+                document.getElementById("modalImage").src = card.dataset.image || "{% static 'ranking/favicon.ico' %}";
+
+                document.getElementById("modalComment").value = "";
+                document.querySelectorAll('input[name="stars"]').forEach(r => r.checked = false);
+                document.getElementById("ratingTitle").textContent = "> INGRESO DE VALORACIÓN";
+
+                document.getElementById("reviewsList").innerHTML = '<div class="sys-msg">Desencriptando datos...</div>';
+
+                fetch(`/obtener_valoracion/${currentGameId}/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.existe) {
+                            document.getElementById("modalComment").value = data.comentario;
+                            const star = document.querySelector(`input[name="stars"][value="${data.estrellas}"]`);
+                            if (star) star.checked = true;
+                            document.getElementById("ratingTitle").textContent = "> EDITAR VALORACIÓN EXISTENTE";
+                        }
+                    });
+
+                fetch(`/api/comentarios/${currentGameId}/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const container = document.getElementById("reviewsList");
+                        container.innerHTML = "";
+
+                        if (data.comentarios && data.comentarios.length > 0) {
+                            data.comentarios.forEach(com => {
+                                const starsDisplay = '★'.repeat(com.estrellas) + '☆'.repeat(5 - com.estrellas);
+                                const html = `
+                                    <div class="cyber-review">
+                                        <div class="review-header">
+                                            <span class="rev-user">USR::${com.usuario}</span>
+                                            <span class="rev-stars">${starsDisplay}</span>
+                                        </div>
+                                        <div class="rev-text">"${com.comentario}"</div>
+                                    </div>
+                                `;
+                                container.innerHTML += html;
+                            });
+                        } else {
+                            container.innerHTML = '<div class="sys-msg">Base de datos vacía para este ítem.</div>';
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        document.getElementById("reviewsList").innerHTML = '<div class="sys-error">[!] FALLO DE CONEXIÓN.</div>';
+                    });
+
+                modal.classList.add("show-modal");
+            });
+        });
+
+        document.getElementById("submitRating").addEventListener("click", () => {
+            const selectedStar = document.querySelector('input[name="stars"]:checked');
+            const comment = document.getElementById("modalComment").value;
+
+            if (!selectedStar) { alert("[!] ERROR: SE REQUIERE PARÁMETRO DE ESTRELLAS."); return; }
+
+            fetch("{% url 'valorar_juego' %}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "X-CSRFToken": "{{ csrf_token }}" },
+                body: JSON.stringify({
+                    game_id: currentGameId,
+                    estrellas: selectedStar.value,
+                    comentario: comment
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "success") {
+                    alert("[OK] DATOS TRANSMITIDOS.");
+                    modal.classList.remove("show-modal");
+                }
+            });
+        });
+
+        closeBtn.onclick = () => modal.classList.remove("show-modal");
+        window.onclick = (e) => { if (e.target === modal) modal.classList.remove("show-modal"); };
+    });
+    </script>
+</body>
+</html>

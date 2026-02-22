@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Configuración: {{ categoria.nombre }} - GamesHub_</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'ranking/home.css' %}">
+    <link rel="stylesheet" href="{% static 'ranking/detalle_categoria.css' %}">
+    <link rel="icon" href="{% static 'ranking/favicon.ico' %}" type="image/x-icon">
+</head>
+<body class="cyber-theme">
+    <div class="particles"></div>
+    <div class="bg-image"></div>
+
+    <nav class="top-nav">
+        <div class="brand-title">Admin<span class="highlight">Panel</span>_</div>
+        <div class="user-terminal">
+            <a href="{% url 'editar_categoria' %}" class="btn-power" title="Volver al menú anterior">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <header class="terminal-header">
+            <div class="sys-badge">/// CONFIG. CLASIFICACIÓN</div>
+            <h1 class="mega-title">{{ categoria.nombre }}</h1>
+            <p class="subtitle-text">>_ Modifique los registros vinculados a esta colección.</p>
+        </header>
+
+        <div class="sys-panel">
+            <h3 class="box-title">> JUEGOS EN MEMORIA ({{ juegos_actuales|length }})</h3>
+            <div class="cyber-tags-container">
+                {% for juego in juegos_actuales %}
+                <div class="cyber-tag">
+                    <span>{{ juego.Name }}</span>
+                    <form method="POST" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="game_id" value="{{ juego.BGGId }}">
+                        <input type="hidden" name="nombre" value="{{ nombre|default:'' }}">
+                        <input type="hidden" name="year" value="{{ year|default:'' }}">
+                        <input type="hidden" name="min_players" value="{{ min_players|default:'' }}">
+                        <input type="hidden" name="max_players" value="{{ max_players|default:'' }}">
+                        <input type="hidden" name="page" value="{{ page_obj.number }}">
+
+                        <button type="submit" name="remove_game" class="btn-tag-remove" title="Purgar">
+                            [X]
+                        </button>
+                    </form>
+                </div>
+                {% empty %}
+                <p class="sys-msg">ESTADO: VACÍO. NO HAY REGISTROS.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <hr class="cyber-divider">
+
+        <div class="search-module">
+            <form method="get" class="cyber-search-form">
+                <span class="prompt-symbol">></span>
+                <input type="text" name="nombre" placeholder="IDENTIFICADOR..." value="{{ nombre|default:'' }}" class="cyber-input">
+                <input type="number" name="year" placeholder="AÑO" value="{{ year|default:'' }}" class="cyber-input-small">
+                <input type="number" name="min_players" placeholder="MIN_PLY" value="{{ min_players|default:'' }}" class="cyber-input-small">
+                <input type="number" name="max_players" placeholder="MAX_PLY" value="{{ max_players|default:'' }}" class="cyber-input-small">
+                <button type="submit" class="cyber-search-btn">FILTRAR</button>
+            </form>
+        </div>
+
+        <div class="games-grid">
+            {% for game in page_obj %}
+            <article class="data-card">
+                <div class="card-visual">
+                    <img src="{{ game.ImagePath|default:'/static/ranking/favicon.ico' }}" alt="{{ game.Name }}">
+                </div>
+                <div class="card-info">
+                    <h3 class="game-title" style="font-size: 1rem;">{{ game.Name }}</h3>
+                    <div class="card-metrics" style="margin-bottom: 15px;">
+                        <span class="highlight-metric"><i class="fas fa-star"></i> {{ game.AvgRating }}</span>
+                        <span class="metric"><i class="fas fa-users"></i> {{ game.MinPlayers }}-{{ game.MaxPlayers }}</span>
+                    </div>
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="game_id" value="{{ game.BGGId }}">
+                        <input type="hidden" name="nombre" value="{{ nombre|default:'' }}">
+                        <input type="hidden" name="year" value="{{ year|default:'' }}">
+                        <input type="hidden" name="min_players" value="{{ min_players|default:'' }}">
+                        <input type="hidden" name="max_players" value="{{ max_players|default:'' }}">
+                        <input type="hidden" name="page" value="{{ page_obj.number }}">
+
+                        <button type="submit" name="add_game" class="cyber-btn-action">
+                            + VINCULAR
+                        </button>
+                    </form>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <nav class="cyber-pagination" style="margin-top: 40px;">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}&nombre={{ nombre|default:'' }}&year={{ year|default:'' }}&min_players={{ min_players|default:'' }}&max_players={{ max_players|default:'' }}" class="pag-btn">&laquo; PREV</a>
+            {% endif %}
+
+            <span class="pag-current">
+                [ BLOCK {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} ]
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&nombre={{ nombre|default:'' }}&year={{ year|default:'' }}&min_players={{ min_players|default:'' }}&max_players={{ max_players|default:'' }}" class="pag-btn">NEXT &raquo;</a>
+            {% endif %}
+        </nav>
+    </div>
+</body>
+</html>

@@ -1,0 +1,265 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Configurar Ranking - GamesHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'ranking/home.css' %}">
+    <link rel="stylesheet" href="{% static 'ranking/crear_ranking.css' %}">
+    <link rel="icon" href="{% static 'ranking/favicon.ico' %}" type="image/x-icon">
+</head>
+
+<body class="cyber-theme">
+    <div class="particles"></div>
+    <div class="bg-image"></div>
+
+    <nav class="top-nav">
+        <div class="brand-title">GamesHub<span class="highlight">Hub</span>_</div>
+        <div class="user-terminal">
+            <a href="{% url 'home' %}" class="btn-power" title="Inicio"><i class="fas fa-home"></i></a>
+            <span class="user-id"><span class="dim-text">USR:</span> {{ user.username }} <span class="blink">_</span></span>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <header class="terminal-header" style="text-align: center; margin-bottom: 2rem;">
+            <div class="sys-badge">/// CONFIGURACIÓN DE JERARQUÍA</div>
+            <h1 id="catTitle" class="mega-title" data-id="{{ categoria.id }}">{{ categoria.nombre }}</h1>
+            <p class="subtitle-text">>_ Arrastre los módulos de datos a los slots para generar la jerarquía.</p>
+        </header>
+
+        <div class="ranking-workspace">
+            <div class="sys-ladder">
+                <h2 class="box-title"><i class="fas fa-sort-numeric-down"></i> JERARQUÍA ALFA (TOP {% if total_juegos < 10 %}{{ total_juegos }}{% else %}10{% endif %})</h2>
+
+                {% if not positions %}
+                    <div class="sys-error">VACÍO: NO HAY DATOS EN ESTA CATEGORÍA.</div>
+                {% else %}
+                    {% for pos in positions %}
+                    <div class="rank-slot-vertical" data-rank="{{ pos }}">
+                        <div class="rank-number">#{{ pos }}</div>
+                        <div class="drop-area"><span class="dim-text">[ INSERTE BLOQUE AQUÍ ]</span></div>
+                    </div>
+                    {% endfor %}
+
+                    <button id="postRanking" class="cyber-btn-cyan">
+                        {% if edit_id %}
+                            <i class="fas fa-save"></i> SOBREESCRIBIR DATOS
+                        {% else %}
+                            <i class="fas fa-satellite-dish"></i> TRANSMITIR RANKING
+                        {% endif %}
+                        <span class="blink">_</span>
+                    </button>
+                {% endif %}
+            </div>
+
+            <div class="game-pool-container">
+                <div class="games-grid">
+                    {% for game in page_obj %}
+                    <div class="data-card-mini" draggable="true"
+                         data-name="{{ game.Name }}"
+                         data-id="{{ game.BGGId }}"
+                         data-image="{{ game.ImagePath }}">
+                        <img src="{{ game.ImagePath|default:'/static/ranking/no_image.png' }}" alt="{{ game.Name }}">
+                        <div class="mini-title">{{ game.Name }}</div>
+                    </div>
+                    {% endfor %}
+
+                    {% if not page_obj %}
+                    <div class="sys-error" style="grid-column: 1/-1;">
+                        NO SE ENCONTRARON MÓDULOS DE JUEGO.
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="cyber-pagination" style="margin-top: 20px;">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}&nombre={{ nombre }}" class="pag-btn">&laquo; PREV</a>
+                    {% endif %}
+                    <span class="pag-current">[ BLOCK {{ page_obj.number }} ]</span>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}&nombre={{ nombre }}" class="pag-btn">NEXT &raquo;</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const categoryName = "{{ categoria.nombre }}";
+        const categoryId = "{{ categoria.id }}";
+        const editId = "{{ edit_id|default:'' }}";
+
+        const storageKey = "tempRanking_" + categoryId;
+        const rankingPrevio = {{ ranking_previo|default:"null"|safe }};
+
+        const draggables = document.querySelectorAll(".data-card-mini");
+        const slots = document.querySelectorAll(".drop-area");
+        let draggedItem = null;
+
+        function renderSavedGames(data) {
+            if (!data) return;
+            Object.keys(data).forEach(pos => {
+                const game = data[pos];
+                if (game && game.id) {
+                    const slotParent = document.querySelector(`.rank-slot-vertical[data-rank="${pos}"]`);
+                    if (slotParent) {
+                        const dropZone = slotParent.querySelector('.drop-area');
+                        fillSlot(dropZone, game.id, game.name, game.image);
+                    }
+                }
+            });
+        }
+
+        if (rankingPrevio && Object.keys(rankingPrevio).length > 0) {
+            renderSavedGames(rankingPrevio);
+            localStorage.removeItem(storageKey);
+        } else {
+            const savedTemp = localStorage.getItem(storageKey);
+            if (savedTemp) renderSavedGames(JSON.parse(savedTemp));
+        }
+
+        draggables.forEach(item => {
+            item.addEventListener("dragstart", () => {
+                draggedItem = item;
+                item.style.opacity = "0.4";
+                item.style.border = "1px solid #FF0055";
+            });
+            item.addEventListener("dragend", () => {
+                draggedItem = null;
+                item.style.opacity = "1";
+                item.style.border = "1px solid #1F2833";
+            });
+        });
+
+        slots.forEach(slot => {
+            slot.addEventListener("dragover", e => {
+                e.preventDefault();
+                slot.parentElement.classList.add("drag-over");
+            });
+
+            slot.addEventListener("dragleave", () => {
+                slot.parentElement.classList.remove("drag-over");
+            });
+
+            slot.addEventListener("drop", (e) => {
+                e.preventDefault();
+                slot.parentElement.classList.remove("drag-over");
+
+                if (!draggedItem) return;
+
+                const id = draggedItem.dataset.id;
+                const name = draggedItem.dataset.name;
+                const image = draggedItem.dataset.image;
+
+                clearGameFromOtherSlots(id);
+                fillSlot(slot, id, name, image);
+                saveTempRanking();
+            });
+        });
+
+        function fillSlot(container, id, name, image) {
+            container.innerHTML = `
+                <div class="ranked-game-display" data-id="${id}" data-name="${name}" data-image="${image}">
+                    <img src="${image || '/static/ranking/no_image.png'}" class="ranked-game-img">
+                    <span class="ranked-game-name">${name}</span>
+                    <button class="remove-btn" onclick="clearSlot(this)">[X]</button>
+                </div>
+            `;
+            container.style.border = "none";
+            container.style.background = "transparent";
+        }
+
+        window.clearSlot = function(btn) {
+            const container = btn.closest('.drop-area');
+            container.style.border = "1px dashed #45A29E";
+            container.style.background = "rgba(11,12,16,0.5)";
+            container.innerHTML = '<span class="dim-text">[ INSERTE BLOQUE AQUÍ ]</span>';
+            saveTempRanking();
+        };
+
+        function clearGameFromOtherSlots(gameId) {
+            document.querySelectorAll(".ranked-game-display").forEach(display => {
+                if (display.dataset.id === gameId) {
+                    const container = display.parentElement;
+                    container.style.border = "1px dashed #45A29E";
+                    container.style.background = "rgba(11,12,16,0.5)";
+                    container.innerHTML = '<span class="dim-text">[ INSERTE BLOQUE AQUÍ ]</span>';
+                }
+            });
+        }
+
+        function saveTempRanking() {
+            const temp = {};
+            document.querySelectorAll(".rank-slot-vertical").forEach(slot => {
+                const pos = slot.dataset.rank;
+                const gameDisplay = slot.querySelector(".ranked-game-display");
+
+                temp[pos] = gameDisplay ? {
+                    id: gameDisplay.dataset.id,
+                    name: gameDisplay.dataset.name,
+                    image: gameDisplay.dataset.image
+                } : null;
+            });
+            localStorage.setItem(storageKey, JSON.stringify(temp));
+        }
+
+        const btnPost = document.getElementById("postRanking");
+        if (btnPost) {
+            btnPost.addEventListener("click", () => {
+                const ranking = {};
+                let hasItems = false;
+
+                document.querySelectorAll(".rank-slot-vertical").forEach(slot => {
+                    const pos = slot.dataset.rank;
+                    const gameDisplay = slot.querySelector(".ranked-game-display");
+
+                    if (gameDisplay) {
+                        hasItems = true;
+                        ranking[pos] = {
+                            id: gameDisplay.dataset.id,
+                            name: gameDisplay.dataset.name,
+                            image: gameDisplay.dataset.image
+                        };
+                    } else {
+                        ranking[pos] = null;
+                    }
+                });
+
+                if (!hasItems) {
+                    alert("[!] ERROR: JERARQUÍA VACÍA. INSERTE MÓDULOS."); return;
+                }
+
+                fetch("{% url 'guardar_ranking' %}", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "X-CSRFToken": "{{ csrf_token }}" },
+                    body: JSON.stringify({
+                        ranking: ranking,
+                        category_name: categoryName,
+                        category_id: categoryId,
+                        edit_id: editId
+                    })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === "ok") {
+                        alert("[OK] DATOS TRANSMITIDOS CON ÉXITO.");
+                        localStorage.removeItem(storageKey);
+                        window.location.href = "{% url 'mis_rankings' %}";
+                    } else {
+                        alert("[!] ERROR EN SISTEMA: " + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("[!] ERROR DE CONEXIÓN CON EL CLÚSTER.");
+                });
+            });
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido - GamesHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'ranking/home.css' %}">
+    <link rel="stylesheet" href="{% static 'ranking/inicio.css' %}">
+</head>
+<body class="dark-theme">
+    <div class="particles"></div>
+    <div class="bg-image"></div>
+
+    <header class="top-nav">
+        <div class="brand-title">Games<span class="highlight">Hub</span>_</div>
+        <div class="nav-links">
+            <a href="{% url 'login' %}" class="outline-btn">ACCEDER</a>
+        </div>
+    </header>
+
+    <main class="main-wrapper">
+        <section class="jumbotron-center">
+            <div class="version-tag">/// v2.0 Beta</div>
+            <h1 class="mega-title">TU UNIVERSO DE<br><span class="neon-text">JUEGOS DE MESA</span></h1>
+            <p class="subtitle-text">Gestiona tu colección, crea rankings personalizados y descubre qué juegan los expertos. La herramienta definitiva para los amantes del tablero.</p>
+
+            <div class="action-panel">
+                <a href="{% url 'register' %}" class="solid-btn">
+                    EMPEZAR AHORA <i class="fas fa-rocket"></i>
+                </a>
+                <a href="{% url 'login' %}" class="ghost-btn">
+                    YA TENGO CUENTA
+                </a>
+            </div>
+
+            <div class="icon-array">
+                <div class="hologram"><i class="fas fa-dice-d20"></i></div>
+                <div class="hologram"><i class="fas fa-chess-king"></i></div>
+                <div class="hologram"><i class="fas fa-chart-pie"></i></div>
+            </div>
+        </section>
+
+        <section class="info-blocks">
+            <article class="info-panel">
+                <div class="panel-header"><i class="fas fa-list-ol"></i></div>
+                <h2>Crea Rankings</h2>
+                <p>Ordena tus juegos favoritos y comparte tu Top 10 con la comunidad.</p>
+            </article>
+            <article class="info-panel">
+                <div class="panel-header"><i class="fas fa-chart-line"></i></div>
+                <h2>Estadísticas</h2>
+                <p>Analiza tendencias globales y descubre qué juegos están subiendo como la espuma.</p>
+            </article>
+            <article class="info-panel">
+                <div class="panel-header"><i class="fas fa-users"></i></div>
+                <h2>Comunidad</h2>
+                <p>Lee valoraciones reales y encuentra tu próximo juego favorito.</p>
+            </article>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>SYSTEM.COPYRIGHT © 2024 BoardGamesHub_ // Diseñado para jugadores.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,18 @@
+.module-admin {
+    border-color: #FFD700;
+    background: rgba(255, 215, 0, 0.05);
+}
+.module-admin .module-header { background: rgba(255, 215, 0, 0.1); color: #FFD700; }
+.module-admin:hover { border-color: #FFD700; box-shadow: 8px 8px 0px rgba(255, 215, 0, 0.2); }
+.module-admin:hover .module-header { background: #FFD700; color: #0B0C10; }
+
+.module-danger {
+    border-color: #FF0055;
+    background: repeating-linear-gradient(45deg, rgba(255, 0, 85, 0.05), rgba(255, 0, 85, 0.05) 10px, #12151C 10px, #12151C 20px);
+}
+.module-danger .module-header { background: rgba(255, 0, 85, 0.1); color: #FF0055; }
+.module-danger:hover { border-color: #FF0055; box-shadow: 8px 8px 0px rgba(255, 0, 85, 0.2); }
+.module-danger:hover .module-header { background: #FF0055; color: #0B0C10; }
+
+.cyber-link { color: #45A29E; text-decoration: none; font-family: monospace; font-size: 0.9rem; text-transform: uppercase; transition: 0.2s; }
+.cyber-link:hover { color: #66FCF1; text-shadow: 0 0 8px rgba(102, 252, 241, 0.5); }

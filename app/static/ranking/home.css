@@ -1,0 +1,232 @@
+/* home.css - Rediseño Tech/Dark Brutalista */
+
+body.cyber-theme {
+    margin: 0;
+    min-height: 100vh;
+    background-color: #0B0C10;
+    background-image: radial-gradient(#1F2833 1px, transparent 1px);
+    background-size: 30px 30px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #C5C6C7;
+    overflow-x: hidden;
+}
+
+.particles, .bg-image { display: none !important; }
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    background: rgba(11, 12, 16, 0.95);
+    border-bottom: 2px solid #66FCF1;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.brand-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #FFF;
+    text-transform: uppercase;
+}
+
+.brand-title .highlight { color: #66FCF1; }
+
+.user-terminal {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-family: monospace;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.dim-text { color: #45A29E; }
+.user-id { color: #FFF; letter-spacing: 1px; }
+
+.blink { animation: blinker 1s linear infinite; }
+@keyframes blinker { 50% { opacity: 0; } }
+
+.btn-power {
+    color: #FF0055;
+    background: transparent;
+    border: 1px solid #FF0055;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.2s;
+    /* Forma de hexágono recortado */
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+.btn-power:hover {
+    background: #FF0055;
+    color: #0B0C10;
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+    transform: scale(1.1);
+}
+
+.main-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.terminal-header {
+    margin-bottom: 60px;
+    border-left: 4px solid #66FCF1;
+    padding-left: 20px;
+}
+
+.sys-badge {
+    display: inline-block;
+    color: #66FCF1;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.mega-title {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: #FFF;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.neon-text-cyan {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #66FCF1;
+    text-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
+}
+
+.subtitle-text {
+    font-size: 1.1rem;
+    color: #9BA4B5;
+    font-family: monospace;
+}
+
+.matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.data-module {
+    background: #12151C;
+    border: 2px solid #1F2833;
+    text-decoration: none;
+    color: #C5C6C7;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.data-module:hover {
+    transform: translateY(-5px);
+    border-color: #66FCF1;
+    background: rgba(18, 21, 28, 0.9);
+    box-shadow: 8px 8px 0px rgba(102, 252, 241, 0.2);
+}
+
+.module-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #1F2833;
+    border-bottom: 1px solid #1F2833;
+    transition: all 0.2s;
+}
+
+.data-module:hover .module-header {
+    background: #66FCF1;
+    color: #0B0C10;
+}
+
+.mod-id {
+    font-family: monospace;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.module-header i {
+    font-size: 1.5rem;
+    color: #66FCF1;
+}
+
+.data-module:hover .module-header i {
+    color: #0B0C10;
+}
+
+.module-body {
+    padding: 30px 20px;
+}
+
+.module-body h3 {
+    font-size: 1.2rem;
+    margin: 0 0 15px 0;
+    color: #FFF;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.module-body p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+    color: #9BA4B5;
+}
+
+/* --- Módulo de Administrador (SYS-ROOT) --- */
+.module-admin {
+    border-color: #FFD700; /* Amarillo/Dorado para peligro/admin */
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 215, 0, 0.03),
+        rgba(255, 215, 0, 0.03) 10px,
+        #12151C 10px,
+        #12151C 20px
+    );
+}
+
+.module-admin .module-header {
+    background: rgba(255, 215, 0, 0.1);
+    color: #FFD700;
+}
+
+.module-admin .module-header i { color: #FFD700; }
+
+.module-admin:hover {
+    border-color: #FFD700;
+    box-shadow: 8px 8px 0px rgba(255, 215, 0, 0.2);
+}
+
+.module-admin:hover .module-header {
+    background: #FFD700;
+    color: #0B0C10;
+}
+
+.module-admin:hover .module-header i { color: #0B0C10; }
+
+@media (max-width: 768px) {
+    .terminal-header { padding-left: 15px; }
+    .matrix-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Telemetría - GamesHub_</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'ranking/home.css' %}">
+    <link rel="stylesheet" href="{% static 'ranking/estadisticas.css' %}">
+    <link rel="icon" href="{% static 'ranking/favicon.ico' %}" type="image/x-icon">
+</head>
+<body class="cyber-theme">
+    <div class="particles"></div>
+    <div class="bg-image"></div>
+
+    <nav class="top-nav">
+        <div class="brand-title">Games<span class="highlight">Stats</span>_</div>
+        <div class="user-terminal">
+            <a href="{% url 'home' %}" class="btn-power" title="Volver al Inicio">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <header class="terminal-header">
+            <div class="sys-badge">/// ANÁLISIS DE DATOS</div>
+            <h1 class="mega-title">TELEMETRÍA <span class="neon-text-gold">GLOBAL</span></h1>
+            <p class="subtitle-text">>_ Procesando algoritmos de popularidad y valoraciones de la red.</p>
+        </header>
+
+        <div class="sys-panel-gold">
+            <h2 class="panel-heading">
+                <i class="fas fa-trophy"></i> TOP MUNDIAL: RANKINGS ALFA
+            </h2>
+            <p class="dim-text" style="margin-bottom: 20px;">>_ BASADO EN MEDIA POSICIONAL DE MÚLTIPLES USUARIOS.</p>
+
+            <div class="table-responsive">
+                <table class="cyber-table">
+                    <thead>
+                        <tr>
+                            <th width="10%">RNG</th>
+                            <th width="50%">IDENTIFICADOR</th>
+                            <th width="20%">FREQ.</th>
+                            <th width="20%">SCORE_AVG</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in ranking_global %}
+                        <tr class="table-row">
+                            <td class="sys-rank {% if forloop.counter <= 3 %}top-rank-{{ forloop.counter }}{% endif %}">
+                                #{{ forloop.counter }}
+                            </td>
+                            <td>
+                                <div class="flex-cell">
+                                    <img src="{{ item.imagen|default:'/static/ranking/favicon.ico' }}" class="mini-avatar">
+                                    <span class="game-name">{{ item.nombre }}</span>
+                                </div>
+                            </td>
+                            <td><span class="cyber-badge-outline">{{ item.apariciones }} MÓDULOS</span></td>
+                            <td><span class="cyber-badge-solid">{{ item.media_posicion }}</span></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="sys-error-cell">
+                                [!] DATOS INSUFICIENTES PARA COMPUTAR RANKING MUNDIAL.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr class="cyber-divider">
+
+        <header class="terminal-header" style="margin-top: 3rem; border-left-color: #FF0055;">
+            <div class="sys-badge" style="color: #FF0055;">/// OPINIÓN PÚBLICA</div>
+            <h2 class="mega-title" style="font-size: 2.5rem;">MEJORES <span class="neon-text-magenta">VALORACIONES</span></h2>
+        </header>
+
+        <div class="stats-grid">
+            {% for juego in juegos_votos %}
+            <div class="stat-card">
+                <div class="stat-header">
+                    <img src="{{ juego.imagen|default:'/static/ranking/favicon.ico' }}" alt="IMG" class="stat-img">
+                    <div class="stat-title-group">
+                        <h3 class="stat-game-title">{{ juego.nombre }}</h3>
+                        <span class="dim-text">VOLUMEN: {{ juego.total_votos }} VOTOS</span>
+                    </div>
+                    <div class="rating-badge">★ {{ juego.media_usuarios }}</div>
+                </div>
+
+                <div class="comments-terminal">
+                    <h4 class="terminal-title">> LOGS DE USUARIO:</h4>
+                    {% for comentario in juego.comentarios %}
+                        <div class="sys-comment">"{{ comentario }}"</div>
+                    {% empty %}
+                        <div class="sys-comment empty-comment">AÚN NO HAY REGISTROS DE TEXTO.</div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% empty %}
+                <div class="sys-error" style="grid-column: 1/-1;">
+                    [!] NO SE ENCONTRARON REGISTROS DE VALORACIÓN.
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

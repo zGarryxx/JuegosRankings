@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Alta de Usuario - GamesHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'ranking/register.css' %}">
+    <link rel="icon" href="{% static 'ranking/favicon.ico' %}" type="image/x-icon">
+</head>
+
+<body class="cyber-theme">
+
+    <div class="particles"></div>
+    <div class="bg-image"></div>
+
+    <div class="enrollment-panel">
+        <div class="visual-section">
+            <div class="scanline-overlay"></div>
+            <img class="cyber-image"
+                 src="https://cf.geekdo-images.com/Xs-1y-7jfcx8K1ybu1NkAQ__original/img/Rp1JGPjTq_Lh6FxxzT5bpihHubU=/0x0/filters:format(jpeg)/pic338410.jpg"
+                 alt="Visual Data">
+        </div>
+
+        <div class="auth-section">
+            <div class="system-header">/// SYSTEM.REGISTRATION_</div>
+            <h2 class="glitch-title">NUEVO PERFIL</h2>
+
+            <form method="post" class="cyber-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="cyber-btn-magenta">INICIALIZAR SECUENCIA <span class="blink">_</span></button>
+            </form>
+
+            <div class="link-matrix">
+                <span class="dim-text">¿ESTADO: USUARIO_ACTIVO?</span>
+                <a href="{% url 'login' %}" class="neon-link-cyan">CONECTAR_AHORA</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

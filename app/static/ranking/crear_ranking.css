@@ -1,0 +1,204 @@
+
+.ranking-workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: calc(100vh - 250px);
+}
+
+.sys-ladder {
+    background: #12151C;
+    border: 1px solid #1F2833;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    overflow-y: auto;
+}
+
+.box-title {
+    color: #66FCF1;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 1.2rem;
+    border-bottom: 1px dashed #45A29E;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.rank-slot-vertical {
+    display: flex;
+    align-items: center;
+    background: #0B0C10;
+    margin-bottom: 15px;
+    border: 1px solid #1F2833;
+    min-height: 70px;
+    transition: 0.2s;
+}
+
+.rank-slot-vertical.drag-over {
+    border-color: #66FCF1;
+    background: rgba(102, 252, 241, 0.1);
+    box-shadow: 0 0 10px rgba(102, 252, 241, 0.2);
+}
+
+.rank-number {
+    font-size: 1.5rem;
+    font-family: 'Space Grotesk', monospace;
+    font-weight: bold;
+    color: #45A29E;
+    width: 60px;
+    text-align: center;
+    border-right: 1px solid #1F2833;
+    padding: 10px 0;
+}
+
+.drop-area {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed #45A29E;
+    margin: 10px;
+    height: 50px;
+    background: rgba(11, 12, 16, 0.5);
+    transition: 0.2s;
+}
+
+.dim-text {
+    color: #45A29E;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.ranked-game-display {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #1F2833;
+    padding: 5px 10px;
+    border-left: 4px solid #66FCF1;
+    box-sizing: border-box;
+}
+
+.ranked-game-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 0;
+    margin-right: 15px;
+    filter: grayscale(50%);
+}
+
+.ranked-game-name {
+    color: #FFF;
+    font-weight: bold;
+    font-family: 'Space Grotesk', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.remove-btn {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid #FF0055;
+    color: #FF0055;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-family: monospace;
+    transition: 0.2s;
+}
+
+.remove-btn:hover {
+    background: #FF0055;
+    color: #FFF;
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+}
+
+.game-pool-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 15px;
+    overflow-y: auto;
+    padding-right: 10px;
+    flex-grow: 1;
+}
+
+.data-card-mini {
+    background: #12151C;
+    border: 1px solid #1F2833;
+    padding: 10px;
+    text-align: center;
+    cursor: grab;
+    transition: 0.2s;
+}
+
+.data-card-mini:hover {
+    border-color: #66FCF1;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(102, 252, 241, 0.1);
+}
+
+.data-card-mini img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    filter: grayscale(30%);
+    pointer-events: none;
+}
+
+.data-card-mini:hover img {
+    filter: grayscale(0%);
+}
+
+.mini-title {
+    font-size: 0.8rem;
+    color: #C5C6C7;
+    font-family: 'Space Grotesk', monospace;
+    margin-top: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cyber-btn-cyan {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    background: #66FCF1;
+    border: none;
+    color: #0B0C10;
+    font-weight: bold;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.2s;
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+}
+
+.cyber-btn-cyan:hover {
+    background: #FFF;
+    box-shadow: 0 0 15px rgba(102, 252, 241, 0.5);
+    transform: translateY(-2px);
+}
+
+.sys-ladder::-webkit-scrollbar, .games-grid::-webkit-scrollbar {
+    width: 6px;
+}
+.sys-ladder::-webkit-scrollbar-track, .games-grid::-webkit-scrollbar-track {
+    background: #0B0C10;
+}

@@ -1,0 +1,210 @@
+
+.rankings-feed {
+    width: 100%;
+    max-width: 900px;
+    margin-top: 30px;
+}
+
+/* Panel de Categoría */
+.sys-panel {
+    background: #12151C;
+    border: 1px solid #1F2833;
+    padding: 25px;
+    margin-bottom: 40px;
+    box-shadow: 6px 6px 0px rgba(102, 252, 241, 0.05);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #45A29E;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.panel-title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.target-icon {
+    font-size: 1.5rem;
+    color: #FF0055;
+}
+
+.category-name {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #FFF;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Botones de acción del header */
+.row-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-icon {
+    background: #0B0C10;
+    color: #66FCF1;
+    border: 1px solid #66FCF1;
+    padding: 8px 15px;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-icon:hover {
+    background: #66FCF1;
+    color: #0B0C10;
+    box-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
+}
+
+.btn-icon.danger {
+    color: #FF0055;
+    border-color: #FF0055;
+}
+
+.btn-icon.danger:hover {
+    background: #FF0055;
+    color: #0B0C10;
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
+}
+
+/* Lista de Juegos (Ranking) */
+.sys-ladder {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.data-row {
+    display: flex;
+    align-items: center;
+    background: #0B0C10;
+    border: 1px solid #1F2833;
+    padding: 10px 15px;
+    transition: 0.2s;
+    border-left: 4px solid #1F2833;
+}
+
+.data-row:hover {
+    background: #1F2833;
+    transform: translateX(5px);
+}
+
+/* Colores condicionales según el puesto */
+.status-gold { border-left-color: #FFD700; background: rgba(255, 215, 0, 0.05); }
+.status-silver { border-left-color: #C0C0C0; background: rgba(192, 192, 192, 0.05); }
+.status-bronze { border-left-color: #CD7F32; background: rgba(205, 127, 50, 0.05); }
+.status-normal { border-left-color: #45A29E; }
+
+.rank-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-family: monospace;
+    color: #C5C6C7;
+    width: 50px;
+}
+
+.status-gold .rank-number { color: #FFD700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+.status-silver .rank-number { color: #C0C0C0; text-shadow: 0 0 5px rgba(192, 192, 192, 0.5); }
+.status-bronze .rank-number { color: #CD7F32; text-shadow: 0 0 5px rgba(205, 127, 50, 0.5); }
+
+.mini-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+    object-fit: cover;
+    margin: 0 20px;
+    border: 1px solid #1F2833;
+    filter: grayscale(40%);
+}
+
+.data-row:hover .mini-avatar {
+    filter: grayscale(0%);
+}
+
+.row-title {
+    flex-grow: 1;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FFF;
+    text-transform: uppercase;
+}
+
+/* Iconos de medalla cibernéticos */
+.medal-icon {
+    font-size: 1.5rem;
+    padding-left: 15px;
+}
+
+.sys-gold { color: #FFD700; filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8)); }
+.sys-silver { color: #C0C0C0; filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.8)); }
+.sys-bronze { color: #CD7F32; filter: drop-shadow(0 0 8px rgba(205, 127, 50, 0.8)); }
+
+/* Estado Vacío */
+.sys-error {
+    text-align: center;
+    padding: 3rem;
+    color: #FF0055;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 1.1rem;
+    border: 1px dashed #FF0055;
+    background: rgba(255, 0, 85, 0.05);
+    line-height: 1.8;
+}
+
+.cyber-link-btn {
+    display: inline-block;
+    margin-top: 15px;
+    color: #66FCF1;
+    text-decoration: none;
+    border: 1px solid #66FCF1;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: 0.2s;
+    background: #0B0C10;
+}
+
+.cyber-link-btn:hover {
+    background: #66FCF1;
+    color: #0B0C10;
+    box-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
+}
+
+/* Link Volver */
+.cyber-link {
+    color: #45A29E;
+    text-decoration: none;
+    font-family: monospace;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    transition: 0.2s;
+}
+
+.cyber-link:hover {
+    color: #66FCF1;
+    text-shadow: 0 0 8px rgba(102, 252, 241, 0.5);
+}
+
+@media (max-width: 600px) {
+    .panel-header { flex-direction: column; align-items: flex-start; }
+    .data-row { padding: 10px; }
+    .mini-avatar { margin: 0 10px; width: 40px; height: 40px; }
+    .rank-number { width: 35px; font-size: 1.2rem; }
+}

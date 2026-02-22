@@ -1,0 +1,197 @@
+
+body.cyber-theme {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0B0C10;
+    /* Patrón de cuadrícula de fondo */
+    background-image: radial-gradient(#1F2833 1px, transparent 1px);
+    background-size: 30px 30px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #C5C6C7;
+    overflow: hidden;
+}
+
+/* Ocultamos elementos residuales */
+.particles, .bg-image {
+    display: none !important;
+}
+
+.access-panel {
+    display: flex;
+    width: 900px;
+    max-width: 95%;
+    min-height: 550px;
+    background: rgba(18, 21, 28, 0.95);
+    border: 2px solid #66FCF1;
+    /* Sombra brutalista dual */
+    box-shadow: 12px 12px 0px rgba(102, 252, 241, 0.15),
+                -2px -2px 20px rgba(255, 0, 85, 0.1);
+    position: relative;
+    animation: bootSequence 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes bootSequence {
+    0% { opacity: 0; transform: scale(0.95) translateY(20px); filter: blur(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+.auth-section {
+    padding: 50px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px dashed #1F2833;
+    z-index: 10;
+}
+
+.system-header {
+    color: #FF0055;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.glitch-title {
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+    color: #FFF;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 2px 0px #66FCF1, -2px 0px #FF0055;
+}
+
+/* Estilos aplicados dinámicamente al HTML que genera Django (form.as_p) */
+.cyber-form p {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.cyber-form p label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #66FCF1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cyber-form input {
+    width: 100%;
+    padding: 14px 16px;
+    background: #000;
+    border: 1px solid #1F2833;
+    color: #FFF;
+    font-size: 1rem;
+    font-family: 'Space Grotesk', monospace;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    /* Bordes rectos, nada de redondeos */
+    border-radius: 0;
+}
+
+.cyber-form input:focus {
+    outline: none;
+    border-color: #FF0055;
+    background: #0B0C10;
+    box-shadow: inset 4px 0 0 #FF0055;
+}
+
+.cyber-btn {
+    width: 100%;
+    padding: 16px;
+    margin-top: 20px;
+    background: #66FCF1;
+    border: none;
+    color: #0B0C10;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    /* Botón con esquina cortada */
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+}
+
+.cyber-btn:hover {
+    background: #FFF;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 252, 241, 0.2);
+}
+
+.blink {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+.visual-section {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #0B0C10;
+}
+
+.cyber-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Filtros para darle ese toque de holograma/monitor antiguo */
+    filter: grayscale(80%) contrast(1.2) brightness(0.6) sepia(40%) hue-rotate(140deg);
+    transition: filter 0.5s;
+}
+
+.visual-section:hover .cyber-image {
+    filter: grayscale(50%) contrast(1.1) brightness(0.8);
+}
+
+/* Efecto de líneas de escaneo sobre la imagen */
+.scanline-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.link-matrix {
+    margin-top: 30px;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.dim-text {
+    color: #45A29E;
+}
+
+.neon-link {
+    color: #FF0055;
+    text-decoration: none;
+    margin-left: 5px;
+    transition: 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.neon-link:hover {
+    color: #FFF;
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.8);
+}
+
+@media (max-width: 768px) {
+    .access-panel { flex-direction: column-reverse; min-height: auto; }
+    .auth-section { border-right: none; border-top: 1px dashed #1F2833; padding: 30px; }
+    .visual-section { height: 200px; }
+}

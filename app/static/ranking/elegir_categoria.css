@@ -1,0 +1,107 @@
+
+.matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 2rem;
+}
+
+.data-module {
+    background: #12151C;
+    border: 1px solid #1F2833;
+    text-decoration: none;
+    color: #C5C6C7;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.data-module:hover {
+    transform: translateY(-5px);
+    border-color: #66FCF1;
+    background: rgba(18, 21, 28, 0.9);
+    box-shadow: 6px 6px 0px rgba(102, 252, 241, 0.15);
+}
+
+.module-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #1F2833;
+    border-bottom: 1px solid #1F2833;
+    transition: all 0.2s;
+}
+
+.data-module:hover .module-header {
+    background: #66FCF1;
+    color: #0B0C10;
+}
+
+.mod-id {
+    font-family: monospace;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.target-icon {
+    font-size: 1.5rem;
+    color: #66FCF1;
+    transition: transform 0.3s;
+}
+
+.data-module:hover .target-icon {
+    color: #0B0C10;
+    transform: rotate(90deg);
+}
+
+.module-body {
+    padding: 25px 20px;
+}
+
+.category-name {
+    font-size: 1.2rem;
+    margin: 0 0 20px 0;
+    color: #FFF;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.dim-text {
+    color: #45A29E;
+}
+
+.cyber-badge-cyan {
+    background: transparent;
+    border: 1px solid #66FCF1;
+    color: #66FCF1;
+    padding: 4px 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.data-module:hover .cyber-badge-cyan {
+    background: #66FCF1;
+    color: #0B0C10;
+}
+
+.sys-error {
+    text-align: center;
+    padding: 3rem;
+    color: #FF0055;
+    font-family: monospace;
+    font-size: 1.2rem;
+    border: 1px dashed #FF0055;
+    background: rgba(255, 0, 85, 0.05);
+}

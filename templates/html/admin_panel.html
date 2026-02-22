@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ROOT ADMIN - BoardGamesHub_</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'ranking/home.css' %}">
+    <link rel="stylesheet" href="{% static 'ranking/admin_panel.css' %}">
+    <link rel="icon" href="{% static 'ranking/favicon.ico' %}" type="image/x-icon">
+</head>
+<body class="cyber-theme">
+    <nav class="top-nav">
+        <div class="brand-title">Games<span class="highlight">Admin</span>_</div>
+        <div class="user-terminal">
+            <a href="{% url 'home' %}" class="btn-power" title="Volver al Inicio"><i class="fas fa-home"></i></a>
+            <span class="user-id"><span class="dim-text">ROOT:</span> {{ user.nombre }} <span class="blink">_</span></span>
+            <a href="{% url 'logout' %}" class="btn-power"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </nav>
+
+    <main class="main-wrapper">
+        <header class="terminal-header">
+            <div class="sys-badge">/// ACCESO NIVEL 0</div>
+            <h1 class="mega-title">PANEL DE <span class="neon-text-gold">CONTROL</span></h1>
+            <p class="subtitle-text">>_ Ejecute protocolos de sobreescritura y gestión de BBDD.</p>
+        </header>
+
+        <div class="matrix-grid">
+            <a href="{% url 'cargar_datos' %}" class="data-module module-admin">
+                <div class="module-header"><span class="mod-id">CMD_UPLOAD</span><i class="fas fa-cloud-upload-alt"></i></div>
+                <div class="module-body"><h3>CARGA MASIVA</h3><p>Importar paquetes CSV al clúster de MongoDB.</p></div>
+            </a>
+            <a href="{% url 'editar_categoria' %}" class="data-module module-admin">
+                <div class="module-header"><span class="mod-id">CMD_CATEG</span><i class="fas fa-folder-plus"></i></div>
+                <div class="module-body"><h3>CLASIFICACIÓN</h3><p>Establecer nuevos parámetros de agrupación.</p></div>
+            </a>
+            <a href="/admin/" class="data-module module-danger" target="_blank">
+                <div class="module-header"><span class="mod-id">SYS_CORE</span><i class="fas fa-database"></i></div>
+                <div class="module-body"><h3>BBDD RAW</h3><p>Modificación directa en el backend de Django.</p></div>
+            </a>
+        </div>
+
+        <div style="margin-top: 50px;">
+             <a href="{% url 'home' %}" class="cyber-link"><i class="fas fa-arrow-left"></i> [ABORTAR] VOLVER AL DASHBOARD</a>
+        </div>
+    </main>
+</body>
+</html>

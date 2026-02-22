@@ -1,0 +1,201 @@
+
+.split-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+/* Panel de Formulario */
+.sys-form-panel {
+    flex: 1;
+    min-width: 300px;
+    background: #12151C;
+    padding: 30px;
+    border: 1px solid #1F2833;
+    box-shadow: 6px 6px 0px rgba(102, 252, 241, 0.1);
+    /* Se queda pegado al hacer scroll si hay muchas categorías */
+    position: sticky;
+    top: 100px;
+}
+
+.box-title {
+    color: #66FCF1;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 1px dashed #45A29E;
+    padding-bottom: 10px;
+}
+
+.cyber-input-group {
+    margin-bottom: 25px;
+}
+
+.cyber-input-group label {
+    display: block;
+    color: #45A29E;
+    font-family: monospace;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.cyber-input-box {
+    width: 100%;
+    padding: 12px;
+    background: #000;
+    border: 1px solid #1F2833;
+    color: #FFF;
+    font-family: 'Space Grotesk', sans-serif;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.cyber-input-box:focus {
+    border-color: #FF0055;
+    outline: none;
+    box-shadow: inset 4px 0 0 #FF0055;
+}
+
+.cyber-btn-magenta {
+    padding: 15px;
+    background: #FF0055;
+    border: none;
+    color: #FFF;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+}
+
+.cyber-btn-magenta:hover {
+    background: #FFF;
+    color: #0B0C10;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 0, 85, 0.2);
+}
+
+/* Panel de Lista de Categorías */
+.sys-list-panel {
+    flex: 2;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.data-row {
+    background: #12151C;
+    border-left: 3px solid #66FCF1;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.data-row:hover {
+    background: #1F2833;
+    transform: translateX(5px);
+    box-shadow: 4px 4px 0px rgba(102, 252, 241, 0.1);
+}
+
+.row-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.row-title {
+    margin: 0;
+    color: #FFF;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dim-text {
+    color: #9BA4B5;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.row-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-icon {
+    color: #66FCF1;
+    padding: 10px;
+    text-decoration: none;
+    border: 1px solid #1F2833;
+    background: #0B0C10;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    background: #66FCF1;
+    color: #000;
+    border-color: #66FCF1;
+}
+
+.btn-icon.danger {
+    color: #FF0055;
+}
+
+.btn-icon.danger:hover {
+    background: #FF0055;
+    color: #000;
+    border-color: #FF0055;
+}
+
+.sys-error {
+    text-align: center;
+    padding: 2rem;
+    color: #FF0055;
+    font-family: monospace;
+    font-size: 1.1rem;
+    border: 1px dashed #FF0055;
+    background: rgba(255, 0, 85, 0.05);
+}
+
+/* Alertas flotantes tipo consola (para los mensajes de Django) */
+.sys-alert-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sys-alert {
+    padding: 15px 25px;
+    font-family: 'Space Grotesk', monospace;
+    font-weight: bold;
+    border-left: 5px solid;
+    background: #12151C;
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideInRight 0.4s ease forwards;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.sys-success { border-color: #66FCF1; }
+.sys-error { border-color: #FF0055; }

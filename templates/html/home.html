@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Principal - BoardGamesHub_</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'ranking/home.css' %}">
+    <link rel="icon" href="{% static 'ranking/favicon.ico' %}" type="image/x-icon">
+</head>
+
+<body class="cyber-theme">
+
+    <div class="particles"></div>
+    <div class="bg-image"></div>
+
+    <nav class="top-nav">
+        <div class="brand-title">Games<span class="highlight">Hub</span>_</div>
+        <div class="user-terminal">
+            <span class="user-id"><span class="dim-text">USR:</span> {{ user.nombre }} <span class="blink">_</span></span>
+            <a href="{% url 'logout' %}" class="btn-power" title="Desconectar">
+                <i class="fas fa-power-off"></i>
+            </a>
+        </div>
+    </nav>
+
+    <main class="main-wrapper">
+
+        <header class="terminal-header">
+            <div class="sys-badge">/// INTERFAZ PRINCIPAL</div>
+            <h1 class="mega-title">PANEL DE <span class="neon-text-cyan">CONTROL</span></h1>
+            <p class="subtitle-text">>_ Ejecute, clasifique y extraiga datos del universo de juegos.</p>
+        </header>
+
+        <div class="matrix-grid">
+
+            <a href="{% url 'ver_juegos' %}" class="data-module">
+                <div class="module-header">
+                    <span class="mod-id">MOD-01</span>
+                    <i class="fas fa-dice-d20"></i>
+                </div>
+                <div class="module-body">
+                    <h3>BIBLIOTECA</h3>
+                    <p>Explora la base de datos completa de juegos.</p>
+                </div>
+            </a>
+
+            <a href="{% url 'elegir_categoria_ranking' %}" class="data-module">
+                <div class="module-header">
+                    <span class="mod-id">MOD-02</span>
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="module-body">
+                    <h3>NUEVO RANKING</h3>
+                    <p>Inicializa el protocolo de votación y crea listas.</p>
+                </div>
+            </a>
+
+            <a href="{% url 'mis_rankings' %}" class="data-module">
+                <div class="module-header">
+                    <span class="mod-id">MOD-03</span>
+                    <i class="fas fa-list-ol"></i>
+                </div>
+                <div class="module-body">
+                    <h3>MIS REGISTROS</h3>
+                    <p>Consulta tus bases de datos y listas personales.</p>
+                </div>
+            </a>
+
+            <a href="{% url 'ver_estadisticas' %}" class="data-module">
+                <div class="module-header">
+                    <span class="mod-id">MOD-04</span>
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="module-body">
+                    <h3>ANÁLISIS GLOBAL</h3>
+                    <p>Procesa tendencias y métricas de la comunidad.</p>
+                </div>
+            </a>
+
+            {% if user.is_staff %}
+            <a href="{% url 'admin_view' %}" class="data-module module-admin">
+                <div class="module-header">
+                    <span class="mod-id">SYS-ROOT</span>
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="module-body">
+                    <h3>OVERRIDE: ADMIN</h3>
+                    <p>Acceso restringido. Gestión interna del sistema.</p>
+                </div>
+            </a>
+            {% endif %}
+
+        </div>
+    </main>
+
+</body>
+</html>

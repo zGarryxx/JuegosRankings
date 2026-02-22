@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Categorías - GamesHub_</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'ranking/home.css' %}">
+    <link rel="stylesheet" href="{% static 'ranking/editar_categoria.css' %}">
+    <link rel="icon" href="{% static 'ranking/favicon.ico' %}" type="image/x-icon">
+</head>
+<body class="cyber-theme">
+    <div class="particles"></div>
+    <div class="bg-image"></div>
+
+    {% if messages %}
+    <div class="sys-alert-container">
+        {% for message in messages %}
+        <div class="sys-alert sys-{% if message.tags == 'success' %}success{% else %}error{% endif %}">
+            <i class="fas {% if message.tags == 'success' %}fa-check-square{% else %}fa-exclamation-triangle{% endif %}"></i>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <nav class="top-nav">
+        <div class="brand-title">Admin<span class="highlight">Categorías</span>_</div>
+        <div class="user-terminal">
+            <a href="{% url 'admin_view' %}" class="btn-power" title="Volver al panel">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <header class="terminal-header">
+            <div class="sys-badge">/// ESTRUCTURA DE BBDD</div>
+            <h1 class="mega-title">GESTIÓN DE <span class="neon-text-magenta">CATEGORÍAS</span></h1>
+            <p class="subtitle-text">>_ Crea, elimina y organiza las agrupaciones de los registros.</p>
+        </header>
+
+        <div class="split-layout">
+            <div class="sys-form-panel">
+                <h3 class="box-title">> NUEVA CLASIFICACIÓN</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="cyber-input-group">
+                        <label>IDENTIFICADOR (NOMBRE)</label>
+                        <input type="text" name="nombre" class="cyber-input-box" placeholder="Ej: Top Euros..." required>
+                    </div>
+                    <button type="submit" class="cyber-btn-magenta" style="width: 100%;">
+                        CREAR REGISTRO <span class="blink">_</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="sys-list-panel">
+                {% for cat in categorias %}
+                    {% if cat.id %}
+                    <div class="data-row">
+                        <div class="row-info">
+                            <h3 class="row-title">{{ cat.nombre }}</h3>
+                            <span class="dim-text">VOLUMEN: {{ cat.lista_juegos|length }} ITEMS</span>
+                        </div>
+                        <div class="row-actions">
+                            <a href="{% url 'detalle_categoria' cat.pk %}" class="btn-icon" title="Configurar">
+                                <i class="fas fa-terminal"></i>
+                            </a>
+                            <a href="{% url 'eliminar_categoria' cat.id %}" class="btn-icon danger" title="Purgar"
+                               onclick="return confirm('¿CONFIRMA PURGAR CATEGORÍA?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% empty %}
+                    <div class="sys-error">NO EXISTEN CATEGORÍAS REGISTRADAS.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.sys-alert');
+            alerts.forEach(alert => {
+                alert.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+                alert.style.opacity = "0";
+                alert.style.transform = "translateX(50px)";
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 3000);
+    </script>
+</body>
+</html>
