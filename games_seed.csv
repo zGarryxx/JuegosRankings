@@ -1,4 +1,4 @@
-BGId,Name,Description,YearPublished,GameWeight,AvgRating,MinPlayers,MaxPlayers,NumUserRatings,NumExpansions,Family,ImagePath
+BGGId,Name,Description,YearPublished,GameWeight,AvgRating,MinPlayers,MaxPlayers,NumUserRatings,NumExpansions,Family,ImagePath
 13,Catan,"Trade, build, and settle the island of Catan.",1995,2.3,7.2,3,4,400000,6,Trading,https://picsum.photos/seed/catan/600/600
 9209,Ticket to Ride,Collect cards to claim railway routes across a map.,2004,1.9,7.4,2,5,350000,8,Route Building,https://picsum.photos/seed/ticket-to-ride/600/600
 822,Carcassonne,Tile-laying game of building a medieval landscape.,2000,1.9,7.4,2,5,300000,10,Tile Placement,https://picsum.photos/seed/carcassonne/600/600

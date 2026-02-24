@@ -166,7 +166,7 @@
 
                 document.getElementById("reviewsList").innerHTML = '<div class="sys-msg">Desencriptando datos...</div>';
 
-                fetch(`/obtener_valoracion/${currentGameId}/`)
+                fetch(`/obtener_valoracion/${currentGameId}/?t=${new Date().getTime()}`)
                     .then(res => res.json())
                     .then(data => {
                         if (data.existe) {

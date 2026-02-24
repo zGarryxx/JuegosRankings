@@ -77,8 +77,8 @@ def logout_usuario(request):
 
 @login_required(login_url='login/')
 def lista_juegos(request):
-    juegos = Games.objects.using("mongodb").all()
 
+    juegos = Games.objects.using("mongodb").all().order_by('Name')
     nombre = request.GET.get("nombre", "")
     year = request.GET.get("year", "")
     min_players = request.GET.get("min_players", "")
@@ -117,18 +117,14 @@ def guardar_ranking(request):
             data = json.loads(request.body)
             db = connections['mongodb'].database
 
-            # 1. Validar Category ID
             cat_id_str = data.get("category_id")
             if not cat_id_str:
                 return JsonResponse({"status": "error", "message": "Falta category_id"}, status=400)
 
             cat_obj_id = ObjectId(cat_id_str)
 
-            # 2. OBTENER NOMBRE DEL USUARIO (CORRECCIÓN ERROR)
-            # Intentamos obtener 'nombre', si no existe, usamos 'email', y si no, convertimos el objeto a string.
             nombre_usuario = getattr(request.user, 'nombre', getattr(request.user, 'email', str(request.user)))
 
-            # 3. FILTRO Y DATOS
             filtro = {
                 "user_id": request.user.id,
                 "category_id": cat_obj_id
@@ -136,14 +132,13 @@ def guardar_ranking(request):
 
             datos_actualizar = {
                 "$set": {
-                    "user": nombre_usuario,  # <--- AQUÍ ESTABA EL ERROR
+                    "user": nombre_usuario,
                     "category_name": data.get("category_name", "General"),
                     "positions": data["ranking"],
                     "category_id": cat_obj_id
                 }
             }
 
-            # 4. GUARDAR (UPSERT)
             result = db.ranking.update_one(filtro, datos_actualizar, upsert=True)
 
             return JsonResponse({"status": "ok"})
@@ -210,6 +205,8 @@ def crear_ranking(request, idcat):
     if nombre_busqueda:
         juegos_filtrados = juegos_filtrados.filter(Name__icontains=nombre_busqueda)
 
+    juegos_filtrados = juegos_filtrados.order_by('Name')
+
     paginator = Paginator(juegos_filtrados, 12)
     page_obj = paginator.get_page(request.GET.get('page'))
 
@@ -228,6 +225,7 @@ def crear_ranking(request, idcat):
 
     return render(request, 'html/crear_ranking.html', context)
 
+
 @login_required(login_url='login/')
 @user_passes_test(es_admin, login_url='home')
 def cargar_datos(request):
@@ -235,35 +233,44 @@ def cargar_datos(request):
         csv_file = request.FILES['csv_file']
 
         try:
-            decoded_file = csv_file.read().decode('utf-8')
+            decoded_file = csv_file.read().decode('utf-8-sig')
             io_string = io.StringIO(decoded_file)
             reader = csv.DictReader(io_string)
 
+            Games.objects.using("mongodb").all().delete()
+
             nuevos_juegos = []
             for row in reader:
+                try:
+                    bgg_id = int(row.get('BGGId', 0) or 0)
+                except ValueError:
+                    bgg_id = 0
+
                 juego = Games(
-                    BGGId=int(row.get('BGGId', 0)),
+                    BGGId=bgg_id,
                     Name=row.get('Name', ''),
                     Description=row.get('Description', ''),
-                    YearPublished=int(row.get('YearPublished', 0)),
-                    GameWeight=float(row.get('GameWeight', 0)),
-                    AvgRating=float(row.get('AvgRating', 0)),
-                    MinPlayers=int(row.get('MinPlayers', 0)),
-                    MaxPlayers=int(row.get('MaxPlayers', 0)),
-                    NumUserRatings=int(row.get('NumUserRatings', 0)),
-                    NumExpansions=int(row.get('NumExpansions', 0)),
+                    YearPublished=int(row.get('YearPublished', 0) or 0),
+                    GameWeight=float(row.get('GameWeight', 0) or 0.0),
+                    AvgRating=float(row.get('AvgRating', 0) or 0.0),
+                    MinPlayers=int(row.get('MinPlayers', 0) or 0),
+                    MaxPlayers=int(row.get('MaxPlayers', 0) or 0),
+                    NumUserRatings=int(row.get('NumUserRatings', 0) or 0),
+                    NumExpansions=int(row.get('NumExpansions', 0) or 0),
                     ImagePath=row.get('ImagePath', '')
                 )
                 nuevos_juegos.append(juego)
 
             if nuevos_juegos:
                 Games.objects.using("mongodb").bulk_create(nuevos_juegos)
-                messages.success(request, f"Se han importado {len(nuevos_juegos)} juegos correctamente.")
+                messages.success(request,
+                                 f"Se han importado {len(nuevos_juegos)} juegos correctamente con sus IDs reales.")
 
             return redirect('admin_view')
 
         except Exception as e:
             messages.error(request, f"Error al procesar el CSV: {e}")
+
     return render(request, "html/cargar_datos.html")
 
 @login_required(login_url='login/')
@@ -449,17 +456,20 @@ def valorar_juego(request):
 
 @login_required(login_url='login/')
 def obtener_valoracion(request, game_id):
-    val = Valoracion.objects.using("mongodb").filter(
-        game_id=game_id,
-        usuario=request.user.nombre
-    ).first()
+    db = connections['mongodb'].database
+
+    val = db.valoraciones.find_one({
+        "game_id": int(game_id),
+        "usuario": request.user.nombre
+    })
 
     if val:
         return JsonResponse({
             "existe": True,
-            "estrellas": val.estrellas,
-            "comentario": val.comentario
+            "estrellas": val.get("estrellas", 0),
+            "comentario": val.get("comentario", "")
         })
+
     return JsonResponse({"existe": False})
 
 @login_required(login_url='login/')
