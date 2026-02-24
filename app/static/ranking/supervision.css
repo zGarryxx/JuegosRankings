@@ -1,0 +1,33 @@
+/* supervision.css - Rediseño Tech/Dark Brutalista */
+
+.metrics-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+.metric-box { background: #12151C; border: 1px solid #1F2833; border-left: 4px solid #B829EA; padding: 20px; display: flex; align-items: center; gap: 20px; box-shadow: 4px 4px 0px rgba(184, 41, 234, 0.1); }
+.metric-box i { font-size: 2.5rem; color: #B829EA; }
+.metric-data h3 { margin: 0; color: #9BA4B5; font-size: 0.9rem; font-family: monospace; }
+.metric-data p { margin: 0; color: #FFF; font-size: 2rem; font-weight: bold; }
+
+.split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.sys-panel-purple { background: #12151C; padding: 25px; border: 1px solid #1F2833; }
+.box-title { color: #D966FF; font-family: monospace; margin-top: 0; border-bottom: 1px dashed #1F2833; padding-bottom: 10px; margin-bottom: 20px; }
+
+/* Tablas */
+.cyber-table { width: 100%; border-collapse: collapse; font-family: 'Space Grotesk', monospace; font-size: 0.9rem; text-align: left; }
+.cyber-table th { color: #D966FF; padding: 10px; border-bottom: 1px solid #1F2833; }
+.cyber-table td { padding: 10px; border-bottom: 1px dashed #1F2833; color: #FFF; }
+.dim-text { color: #45A29E; }
+.cyber-badge { border: 1px solid #45A29E; color: #45A29E; padding: 2px 8px; font-size: 0.8rem; }
+.admin-badge { background: #FF0055; color: #FFF; border: none; font-weight: bold; }
+
+/* Logs */
+.logs-container { max-height: 400px; overflow-y: auto; padding-right: 10px; }
+.sys-log { background: #0B0C10; border-left: 2px solid #66FCF1; padding: 10px; margin-bottom: 10px; font-family: monospace; display: flex; flex-direction: column; gap: 5px; }
+.log-user { color: #66FCF1; font-weight: bold; }
+.log-action { color: #C5C6C7; font-size: 0.85rem; }
+
+/* Scrollbar */
+.logs-container::-webkit-scrollbar { width: 6px; }
+.logs-container::-webkit-scrollbar-track { background: #0B0C10; }
+.logs-container::-webkit-scrollbar-thumb { background: #1F2833; }
+.logs-container::-webkit-scrollbar-thumb:hover { background: #B829EA; }
+
+@media (max-width: 800px) { .split-layout { grid-template-columns: 1fr; } }

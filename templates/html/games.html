@@ -25,6 +25,16 @@
     </nav>
 
     <div class="main-wrapper">
+        {% if messages %}
+        <div style="margin-bottom: 20px;">
+            {% for message in messages %}
+                <div style="padding: 10px; background: #12151C; border-left: 5px solid #66FCF1; color: #FFF; font-family: monospace;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <header class="terminal-header">
             <div class="sys-badge">/// DIR: /BBDD/JUEGOS</div>
             <h1 class="mega-title">BIBLIOTECA DE <span class="neon-text-magenta">DATOS</span></h1>
@@ -65,6 +75,15 @@
                         <span class="metric"><i class="fas fa-users"></i> {{ game.MinPlayers }}-{{ game.MaxPlayers }}</span>
                         <span class="metric highlight-metric"><i class="fas fa-star"></i> {{ game.AvgRating }}</span>
                     </div>
+
+                    {% if user.is_staff %}
+                    <form action="{% url 'eliminar_juego' game.BGGId %}" method="POST" style="margin-top: 15px; position: relative; z-index: 50;">
+                        {% csrf_token %}
+                        <button type="submit" class="cyber-btn-delete-game" onclick="event.stopPropagation(); return confirm('¿PURGAR ESTE ELEMENTO DE LA BBDD GLOBAL? Esta acción no se puede deshacer.');">
+                            <i class="fas fa-trash"></i> PURGAR ITEM
+                        </button>
+                    </form>
+                    {% endif %}
                 </div>
             </article>
             {% empty %}
@@ -150,9 +169,13 @@
         let currentGameId = null;
 
         cards.forEach(card => {
-            card.addEventListener("click", () => {
+            card.addEventListener("click", (e) => {
+                // Evitar abrir el modal si se hizo clic en el botón de eliminar
+                if(e.target.closest('form')) return;
+
                 currentGameId = card.getAttribute('data-id');
 
+                // Rellenar datos visuales del juego
                 document.getElementById("modalTitle").textContent = card.dataset.name;
                 document.getElementById("modalDescription").textContent = card.dataset.description;
                 document.getElementById("modalYear").textContent = card.dataset.year;
@@ -160,12 +183,20 @@
                 document.getElementById("modalRating").textContent = card.dataset.rating;
                 document.getElementById("modalImage").src = card.dataset.image || "{% static 'ranking/favicon.ico' %}";
 
+                // Limpiar el formulario por defecto (Modo Crear)
                 document.getElementById("modalComment").value = "";
                 document.querySelectorAll('input[name="stars"]').forEach(r => r.checked = false);
-                document.getElementById("ratingTitle").textContent = "> INGRESO DE VALORACIÓN";
+
+                const btnSubmit = document.getElementById("submitRating");
+                const titleRating = document.getElementById("ratingTitle");
+
+                titleRating.textContent = "> NUEVO INGRESO DE VALORACIÓN";
+                btnSubmit.innerHTML = "<i class='fas fa-upload'></i> TRANSMITIR DATOS <span class='blink'>_</span>";
+                btnSubmit.style.backgroundColor = "#FF0055"; // Color original Magenta
 
                 document.getElementById("reviewsList").innerHTML = '<div class="sys-msg">Desencriptando datos...</div>';
 
+                // COMPROBAR SI EL USUARIO YA HA VALORADO ESTE JUEGO
                 fetch(`/obtener_valoracion/${currentGameId}/?t=${new Date().getTime()}`)
                     .then(res => res.json())
                     .then(data => {
@@ -173,11 +204,14 @@
                             document.getElementById("modalComment").value = data.comentario;
                             const star = document.querySelector(`input[name="stars"][value="${data.estrellas}"]`);
                             if (star) star.checked = true;
-                            document.getElementById("ratingTitle").textContent = "> EDITAR VALORACIÓN EXISTENTE";
+
+                            titleRating.innerHTML = "<span style='color:#B829EA;'>> MODO EDICIÓN (REGISTRO PREVIO DETECTADO)</span>";
+                            btnSubmit.innerHTML = "<i class='fas fa-edit'></i> ACTUALIZAR REGISTRO <span class='blink'>_</span>";
+                            btnSubmit.style.backgroundColor = "#B829EA"; // Cambiamos el botón a color Púrpura
                         }
                     });
 
-                fetch(`/api/comentarios/${currentGameId}/`)
+                fetch(`/api/comentarios/${currentGameId}/?t=${new Date().getTime()}`)
                     .then(res => res.json())
                     .then(data => {
                         const container = document.getElementById("reviewsList");
@@ -210,11 +244,15 @@
             });
         });
 
+        // ENVIAR O ACTUALIZAR LA VALORACIÓN
         document.getElementById("submitRating").addEventListener("click", () => {
             const selectedStar = document.querySelector('input[name="stars"]:checked');
             const comment = document.getElementById("modalComment").value;
 
-            if (!selectedStar) { alert("[!] ERROR: SE REQUIERE PARÁMETRO DE ESTRELLAS."); return; }
+            if (!selectedStar) {
+                alert("[!] ERROR: SE REQUIERE PARÁMETRO DE ESTRELLAS.");
+                return;
+            }
 
             fetch("{% url 'valorar_juego' %}", {
                 method: "POST",
@@ -228,8 +266,10 @@
             .then(res => res.json())
             .then(data => {
                 if(data.status === "success") {
-                    alert("[OK] DATOS TRANSMITIDOS.");
+                    alert(data.message);
                     modal.classList.remove("show-modal");
+                } else {
+                    alert("[!] ERROR DEL SISTEMA.");
                 }
             });
         });

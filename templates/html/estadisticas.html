@@ -27,8 +27,27 @@
         <header class="terminal-header">
             <div class="sys-badge">/// ANÁLISIS DE DATOS</div>
             <h1 class="mega-title">TELEMETRÍA <span class="neon-text-gold">GLOBAL</span></h1>
-            <p class="subtitle-text">>_ Procesando algoritmos de popularidad y valoraciones de la red.</p>
         </header>
+
+        <div class="sys-panel-metrics" style="background: #12151C; border: 1px solid #66FCF1; padding: 20px; margin-bottom: 2rem; display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-around;">
+            <div style="text-align: center;">
+                <h3 style="color: #66FCF1; font-family: monospace; margin:0 0 10px 0;">VOLUMEN TOTAL (VALORACIONES)</h3>
+                <span style="font-size: 2.5rem; color: #FFF; font-weight: bold;">{{ total_valoraciones }}</span>
+            </div>
+
+            <div style="flex-grow: 1; min-width: 300px; border-left: 1px dashed #1F2833; padding-left: 20px;">
+                <h3 style="color: #66FCF1; font-family: monospace; margin:0 0 15px 0;">PROMEDIOS POR CATEGORÍA</h3>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    {% for pc in promedios_categoria %}
+                    <span style="background: #0B0C10; border: 1px solid #45A29E; color: #FFF; padding: 5px 10px; font-family: monospace;">
+                        {{ pc.nombre }}: <strong style="color:#FFD700;">★{{ pc.promedio }}</strong> ({{ pc.volumen }} ops)
+                    </span>
+                    {% empty %}
+                    <span class="dim-text">No hay categorías valoradas.</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 
         <div class="sys-panel-gold">
             <h2 class="panel-heading">

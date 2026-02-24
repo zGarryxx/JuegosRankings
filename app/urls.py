@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.urls import path
 
-from app.views import ranking_view, login_usuario, registrar_usuario, home_view, lista_juegos, crear_ranking, \
-    guardar_ranking, admin_view, editar_categoria, cargar_datos, detalle_categoria, eliminar_categoria, \
-    elegir_categoria_ranking, valorar_juego, obtener_valoracion, mis_rankings, eliminar_ranking, \
-    obtener_comentarios_juego, global_ranking, inicio
+from app.views import (ranking_view, login_usuario, registrar_usuario, home_view, lista_juegos, crear_ranking,
+                       guardar_ranking, admin_view, editar_categoria, cargar_datos, detalle_categoria,
+                       eliminar_categoria,
+                       elegir_categoria_ranking, valorar_juego, obtener_valoracion, mis_rankings, eliminar_ranking,
+                       obtener_comentarios_juego, global_ranking, inicio,
+                       sincronizar_api, supervision_admin, eliminar_juego_completo)
 
 urlpatterns = [
     path('ranking/', ranking_view, name='ranking'),
@@ -46,4 +48,9 @@ urlpatterns = [
     path('eliminar_ranking/<str:ranking_id>/', eliminar_ranking, name='eliminar_ranking'),
     path('api/comentarios/<int:game_id>/', obtener_comentarios_juego, name='obtener_comentarios_juego'),
     path('estadisticas/', global_ranking, name='ver_estadisticas'),
+
+    # --- NUEVAS RUTAS PARA CUBRIR REQUISITOS DEL PROYECTO ---
+    path('sincronizar_api/', sincronizar_api, name='sincronizar_api'),  # RF5
+    path('supervision/', supervision_admin, name='supervision_admin'),  # RF10
+    path('eliminar_juego/<int:game_id>/', eliminar_juego_completo, name='eliminar_juego'),  # RF4
 ]

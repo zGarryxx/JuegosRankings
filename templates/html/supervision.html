@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Supervisión - GamesHub_</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'ranking/home.css' %}">
+    <link rel="stylesheet" href="{% static 'ranking/supervision.css' %}">
+    <link rel="icon" href="{% static 'ranking/favicon.ico' %}" type="image/x-icon">
+</head>
+<body class="cyber-theme">
+    <div class="particles"></div>
+    <div class="bg-image"></div>
+
+    <nav class="top-nav">
+        <div class="brand-title">Admin<span class="highlight">Watch</span>_</div>
+        <div class="user-terminal">
+            <a href="{% url 'admin_view' %}" class="btn-power"><i class="fas fa-arrow-left"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <header class="terminal-header" style="border-left-color: #B829EA;">
+            <div class="sys-badge" style="color: #B829EA;">/// MONITOREO EN TIEMPO REAL</div>
+            <h1 class="mega-title">PANEL DE <span style="color: #D966FF; text-shadow: 0 0 10px rgba(217,102,255,0.4);">SUPERVISIÓN</span></h1>
+        </header>
+
+        <div class="metrics-row">
+            <div class="metric-box">
+                <i class="fas fa-users"></i>
+                <div class="metric-data"><h3>USUARIOS</h3><p>{{ usuarios|length }}</p></div>
+            </div>
+            <div class="metric-box">
+                <i class="fas fa-list-ol"></i>
+                <div class="metric-data"><h3>RANKINGS CREADOS</h3><p>{{ total_rankings }}</p></div>
+            </div>
+            <div class="metric-box">
+                <i class="fas fa-star"></i>
+                <div class="metric-data"><h3>VALORACIONES</h3><p>{{ valoraciones_recientes|length }} (Últimas)</p></div>
+            </div>
+        </div>
+
+        <div class="split-layout">
+            <div class="sys-panel-purple">
+                <h3 class="box-title">> REGISTRO DE USUARIOS</h3>
+                <div class="table-responsive">
+                    <table class="cyber-table">
+                        <thead>
+                            <tr>
+                                <th>USUARIO</th>
+                                <th>EMAIL</th>
+                                <th>ROL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for u in usuarios %}
+                            <tr>
+                                <td>{{ u.nombre }}</td>
+                                <td class="dim-text">{{ u.email }}</td>
+                                <td>
+                                    <span class="cyber-badge {% if u.rol == 'admin' %}admin-badge{% endif %}">{{ u.rol }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="sys-panel-purple">
+                <h3 class="box-title">> LOGS: ÚLTIMAS VALORACIONES</h3>
+                <div class="logs-container">
+                    {% for val in valoraciones_recientes %}
+                    <div class="sys-log">
+                        <span class="log-user">USR::{{ val.usuario }}</span>
+                        <span class="log-action">PUNTUACIÓN: {{ val.estrellas }}★ (JUEGO_ID: {{ val.game_id }})</span>
+                    </div>
+                    {% empty %}
+                    <p class="dim-text">SIN REGISTROS RECIENTES.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
